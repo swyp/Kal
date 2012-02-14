@@ -9,6 +9,8 @@
 #import "KalDate.h"
 #import "KalPrivate.h"
 
+#import "MAEvent.h"
+
 #define PROFILER 0
 #if PROFILER
 #include <mach/mach_time.h>
@@ -39,6 +41,7 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 @implementation KalViewController
 
 @synthesize dataSource, delegate, initialDate, selectedDate;
+@synthesize dayView;
 
 - (id)initWithSelectedDate:(NSDate *)date
 {
@@ -97,13 +100,16 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 
 - (void)didSelectDate:(KalDate *)date
 {
-  self.selectedDate = [date NSDate];
-  NSDate *from = [[date NSDate] cc_dateByMovingToBeginningOfDay];
-  NSDate *to = [[date NSDate] cc_dateByMovingToEndOfDay];
-  [self clearTable];
-  [dataSource loadItemsFromDate:from toDate:to];
-  [tableView reloadData];
-  [tableView flashScrollIndicators];
+	self.selectedDate = [date NSDate];
+	NSDate *from = [[date NSDate] cc_dateByMovingToBeginningOfDay];
+	NSDate *to = [[date NSDate] cc_dateByMovingToEndOfDay];
+	[self clearTable];
+	[dataSource loadItemsFromDate:from toDate:to];
+	[tableView reloadData];
+	[tableView flashScrollIndicators];
+
+	[dayView setDay:from];
+	[dayView reloadData];
 }
 
 - (void)showPreviousMonth
@@ -181,16 +187,28 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 
 - (void)loadView
 {
-  if (!self.title)
-    self.title = @"Calendar";
-  KalView *kalView = [[[KalView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] delegate:self logic:logic] autorelease];
-  self.view = kalView;
-  tableView = kalView.tableView;
-  tableView.dataSource = dataSource;
-  tableView.delegate = delegate;
-  [tableView retain];
-  [kalView selectDate:[KalDate dateFromNSDate:self.initialDate]];
-  [self reloadData];
+	if (!self.title)
+	self.title = @"Calendar";
+	kalView = [[KalView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] delegate:self logic:logic] ;
+	self.view = kalView;
+	tableView = kalView.tableView;
+	tableView.dataSource = dataSource;
+	tableView.delegate = delegate;
+	[tableView retain];
+	
+	dayView	=	[kalView.dayView retain];
+	[dayView setDataSource:self];
+	[dayView setDelegate:self];
+	
+	if (UIDeviceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) || ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)){
+		[kalView layoutForWideWidth];
+	}else{
+		[kalView layoutForNarrowWidth];		
+	}
+
+	
+	[kalView selectDate:[KalDate dateFromNSDate:self.initialDate]];
+	[self reloadData];
 }
 
 - (void)viewDidUnload
@@ -212,17 +230,65 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
   [tableView flashScrollIndicators];
 }
 
+-(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+	
+	return TRUE;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+	if (UIDeviceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) || ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)){
+		[kalView layoutForWideWidth];
+	}else{
+		[kalView layoutForNarrowWidth];		
+	}
+}
+
 #pragma mark -
 
 - (void)dealloc
 {
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationSignificantTimeChangeNotification object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:KalDataSourceChangedNotification object:nil];
-  [initialDate release];
-  [selectedDate release];
-  [logic release];
-  [tableView release];
-  [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationSignificantTimeChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:KalDataSourceChangedNotification object:nil];
+	[initialDate release];
+	[selectedDate release];
+	[logic release];
+	[tableView release];
+	[dayView release];
+	[kalView release];
+	[super dealloc];
+}
+
+
+#pragma mark - MADayView
+- (NSArray *)dayView:(MADayView *)dayView eventsForDate:(NSDate *)date{
+	NSDate *from = [date  cc_dateByMovingToBeginningOfDay];
+	NSDate *to = [date  cc_dateByMovingToEndOfDay];
+	NSArray * mkEvents	=	[dataSource eventsFrom:from to:to];
+	
+	NSMutableArray * maEvents	=	[NSMutableArray arrayWithCapacity:[mkEvents count]];
+	for (EKEvent * event in mkEvents){
+		MAEvent *nextMAEvent = [[MAEvent alloc] init];
+		nextMAEvent.backgroundColor = [UIColor colorWithCGColor:[[event calendar] CGColor]];
+		nextMAEvent.textColor = [UIColor whiteColor];
+		nextMAEvent.allDay	= NO;
+		nextMAEvent.start	=	event.startDate;
+		nextMAEvent.end		=	event.endDate;
+		nextMAEvent.title	=	event.title;
+		nextMAEvent.userInfo	=	[NSDictionary dictionaryWithObject:event forKey:@"EKEvent"];
+		[maEvents addObject:nextMAEvent];
+
+		[nextMAEvent release];
+		nextMAEvent	=	nil;
+	}
+	
+	
+	return maEvents;
+}
+
+- (void)dayView:(MADayView *)dayView eventTapped:(MAEvent *)event{
+	if ([delegate respondsToSelector:@selector(tappedOnEvent:withController:)]){
+		[delegate tappedOnEvent:[event.userInfo objectForKey:@"EKEvent"] withController:self];
+	}
 }
 
 @end

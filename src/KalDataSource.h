@@ -76,6 +76,10 @@
 - (NSArray *)markedDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate;
 - (void)loadItemsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
 - (void)removeAllItems;
+
+///Returns a list of EKEvents
+-(NSArray*)	eventsFrom:(NSDate *)fromDate to:(NSDate *)toDate;
+
 @end
 
 @protocol KalDataSourceCallbacks <NSObject>

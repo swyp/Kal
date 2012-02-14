@@ -1,4 +1,4 @@
-/* 
+	/* 
  * Copyright (c) 2009 Keith Lazuka
  * License: http://www.opensource.org/licenses/mit-license.html
  */
@@ -6,8 +6,17 @@
 #import <UIKit/UIKit.h>
 #import "KalView.h"       // for the KalViewDelegate protocol
 #import "KalDataSource.h" // for the KalDataSourceCallbacks protocol
+#import "MADayView.h"
+#import <EventKit/EventKit.h>
 
-@class KalLogic, KalDate;
+@class KalLogic, KalDate, KalViewController;
+
+@protocol KalViewControllerDelegate <NSObject>
+@optional
+-(void) longPressedOnEvent:(EKEvent*)event withController:(KalViewController*)controller;
+-(void) tappedOnEvent:(EKEvent*)event withController:(KalViewController*)controller;
+-(void) longPressedOnDay:(NSDate*)date withController:(KalViewController*)controller;
+@end
 
 /*
  *    KalViewController
@@ -20,19 +29,23 @@
  *  date is selected (just like in Apple's calendar app).
  *
  */
-@interface KalViewController : UIViewController <KalViewDelegate, KalDataSourceCallbacks>
+@interface KalViewController : UIViewController <KalViewDelegate, KalDataSourceCallbacks, MADayViewDelegate,MADayViewDataSource>
 {
-  KalLogic *logic;
-  UITableView *tableView;
-  id <UITableViewDelegate> delegate;
-  id <KalDataSource> dataSource;
-  NSDate *initialDate;                    // The date that the calendar was initialized with *or* the currently selected date when the view hierarchy was torn down in order to satisfy a low memory warning.
-  NSDate *selectedDate;                   // I cache the selected date because when we respond to a memory warning, we cannot rely on the view hierarchy still being alive, and thus we cannot always derive the selected date from KalView's selectedDate property.
+	KalLogic *logic;
+	KalView *kalView;
+	UITableView *	tableView;
+	MADayView *		dayView;
+
+	id <KalViewControllerDelegate> delegate;
+	id <KalDataSource> dataSource;
+	NSDate *initialDate;                    // The date that the calendar was initialized with *or* the currently selected date when the view hierarchy was torn down in order to satisfy a low memory warning.
+	NSDate *selectedDate;                   // I cache the selected date because when we respond to a memory warning, we cannot rely on the view hierarchy still being alive, and thus we cannot always derive the selected date from KalView's selectedDate property.
 }
 
-@property (nonatomic, assign) id<UITableViewDelegate> delegate;
+@property (nonatomic, assign) id<KalViewControllerDelegate> delegate;
 @property (nonatomic, assign) id<KalDataSource> dataSource;
 @property (nonatomic, retain, readonly) NSDate *selectedDate;
+@property (nonatomic, readonly) 	MADayView *		dayView;
 
 - (id)initWithSelectedDate:(NSDate *)selectedDate;  // designated initializer. When the calendar is first displayed to the user, the month that contains 'selectedDate' will be shown and the corresponding tile for 'selectedDate' will be automatically selected.
 - (void)reloadData;                                 // If you change the KalDataSource after the KalViewController has already been displayed to the user, you must call this method in order for the view to reflect the new data.

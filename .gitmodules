@@ -1,0 +1,3 @@
+[submodule "calendar-ui"]
+	path = calendar-ui
+	url = git@github.com:swyp/calendar-ui.git

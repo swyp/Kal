@@ -29,6 +29,16 @@
 		533B288911E2D46E00B3CC07 /* NSDateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 533B287311E2D46E00B3CC07 /* NSDateAdditions.m */; };
 		533B288A11E2D46E00B3CC07 /* UIViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 533B287411E2D46E00B3CC07 /* UIViewAdditions.h */; };
 		533B288B11E2D46E00B3CC07 /* UIViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 533B287511E2D46E00B3CC07 /* UIViewAdditions.m */; };
+		7959A58D14E9F23B00020F6B /* MADayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7959A58314E9F23B00020F6B /* MADayView.h */; };
+		7959A58E14E9F23B00020F6B /* MADayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7959A58414E9F23B00020F6B /* MADayView.m */; };
+		7959A58F14E9F23B00020F6B /* MAEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 7959A58514E9F23B00020F6B /* MAEvent.h */; };
+		7959A59014E9F23B00020F6B /* MAEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7959A58614E9F23B00020F6B /* MAEvent.m */; };
+		7959A59114E9F23B00020F6B /* MAGridView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7959A58714E9F23B00020F6B /* MAGridView.h */; };
+		7959A59214E9F23B00020F6B /* MAGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7959A58814E9F23B00020F6B /* MAGridView.m */; };
+		7959A59314E9F23B00020F6B /* MAWeekView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7959A58914E9F23B00020F6B /* MAWeekView.h */; };
+		7959A59414E9F23B00020F6B /* MAWeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7959A58A14E9F23B00020F6B /* MAWeekView.m */; };
+		7959A59514E9F23B00020F6B /* TapDetectingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7959A58B14E9F23B00020F6B /* TapDetectingView.h */; };
+		7959A59614E9F23B00020F6B /* TapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7959A58C14E9F23B00020F6B /* TapDetectingView.m */; };
 		AA747D9F0F9514B9006C5449 /* Kal_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* Kal_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -57,6 +67,21 @@
 		533B287311E2D46E00B3CC07 /* NSDateAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateAdditions.m; sourceTree = "<group>"; };
 		533B287411E2D46E00B3CC07 /* UIViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewAdditions.h; sourceTree = "<group>"; };
 		533B287511E2D46E00B3CC07 /* UIViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewAdditions.m; sourceTree = "<group>"; };
+		7959A58314E9F23B00020F6B /* MADayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MADayView.h; sourceTree = "<group>"; };
+		7959A58414E9F23B00020F6B /* MADayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MADayView.m; sourceTree = "<group>"; };
+		7959A58514E9F23B00020F6B /* MAEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAEvent.h; sourceTree = "<group>"; };
+		7959A58614E9F23B00020F6B /* MAEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAEvent.m; sourceTree = "<group>"; };
+		7959A58714E9F23B00020F6B /* MAGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGridView.h; sourceTree = "<group>"; };
+		7959A58814E9F23B00020F6B /* MAGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGridView.m; sourceTree = "<group>"; };
+		7959A58914E9F23B00020F6B /* MAWeekView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAWeekView.h; sourceTree = "<group>"; };
+		7959A58A14E9F23B00020F6B /* MAWeekView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAWeekView.m; sourceTree = "<group>"; };
+		7959A58B14E9F23B00020F6B /* TapDetectingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapDetectingView.h; sourceTree = "<group>"; };
+		7959A58C14E9F23B00020F6B /* TapDetectingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapDetectingView.m; sourceTree = "<group>"; };
+		7959A59814E9F24300020F6B /* ma_leftArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ma_leftArrow.png; sourceTree = "<group>"; };
+		7959A59914E9F24300020F6B /* ma_leftArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ma_leftArrow@2x.png"; sourceTree = "<group>"; };
+		7959A59A14E9F24300020F6B /* ma_rightArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ma_rightArrow.png; sourceTree = "<group>"; };
+		7959A59B14E9F24300020F6B /* ma_rightArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ma_rightArrow@2x.png"; sourceTree = "<group>"; };
+		7959A59C14E9F24300020F6B /* ma_topBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ma_topBackground.png; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* Kal_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kal_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libKal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKal.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +110,7 @@
 		0867D691FE84028FC02AAC07 /* Kal */ = {
 			isa = PBXGroup;
 			children = (
+				7959A57F14E9F1C900020F6B /* DayCal UI */,
 				533B285F11E2D46E00B3CC07 /* Kal.bundle */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				533B289C11E2D48000B3CC07 /* Additions */,
@@ -147,6 +173,46 @@
 			name = Additions;
 			sourceTree = "<group>";
 		};
+		7959A57F14E9F1C900020F6B /* DayCal UI */ = {
+			isa = PBXGroup;
+			children = (
+				7959A59714E9F24300020F6B /* Images */,
+				7959A58214E9F23B00020F6B /* Views */,
+			);
+			name = "DayCal UI";
+			sourceTree = "<group>";
+		};
+		7959A58214E9F23B00020F6B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7959A58314E9F23B00020F6B /* MADayView.h */,
+				7959A58414E9F23B00020F6B /* MADayView.m */,
+				7959A58514E9F23B00020F6B /* MAEvent.h */,
+				7959A58614E9F23B00020F6B /* MAEvent.m */,
+				7959A58714E9F23B00020F6B /* MAGridView.h */,
+				7959A58814E9F23B00020F6B /* MAGridView.m */,
+				7959A58914E9F23B00020F6B /* MAWeekView.h */,
+				7959A58A14E9F23B00020F6B /* MAWeekView.m */,
+				7959A58B14E9F23B00020F6B /* TapDetectingView.h */,
+				7959A58C14E9F23B00020F6B /* TapDetectingView.m */,
+			);
+			name = Views;
+			path = "../calendar-ui/Classes/Views";
+			sourceTree = "<group>";
+		};
+		7959A59714E9F24300020F6B /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				7959A59814E9F24300020F6B /* ma_leftArrow.png */,
+				7959A59914E9F24300020F6B /* ma_leftArrow@2x.png */,
+				7959A59A14E9F24300020F6B /* ma_rightArrow.png */,
+				7959A59B14E9F24300020F6B /* ma_rightArrow@2x.png */,
+				7959A59C14E9F24300020F6B /* ma_topBackground.png */,
+			);
+			name = Images;
+			path = "../calendar-ui/Images";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -167,6 +233,11 @@
 				533B288611E2D46E00B3CC07 /* KalViewController.h in Headers */,
 				533B288811E2D46E00B3CC07 /* NSDateAdditions.h in Headers */,
 				533B288A11E2D46E00B3CC07 /* UIViewAdditions.h in Headers */,
+				7959A58D14E9F23B00020F6B /* MADayView.h in Headers */,
+				7959A58F14E9F23B00020F6B /* MAEvent.h in Headers */,
+				7959A59114E9F23B00020F6B /* MAGridView.h in Headers */,
+				7959A59314E9F23B00020F6B /* MAWeekView.h in Headers */,
+				7959A59514E9F23B00020F6B /* TapDetectingView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +301,11 @@
 				533B288711E2D46E00B3CC07 /* KalViewController.m in Sources */,
 				533B288911E2D46E00B3CC07 /* NSDateAdditions.m in Sources */,
 				533B288B11E2D46E00B3CC07 /* UIViewAdditions.m in Sources */,
+				7959A58E14E9F23B00020F6B /* MADayView.m in Sources */,
+				7959A59014E9F23B00020F6B /* MAEvent.m in Sources */,
+				7959A59214E9F23B00020F6B /* MAGridView.m in Sources */,
+				7959A59414E9F23B00020F6B /* MAWeekView.m in Sources */,
+				7959A59614E9F23B00020F6B /* TapDetectingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

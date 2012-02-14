@@ -4,6 +4,7 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "MADayView.h"
 
 @class KalGridView, KalLogic, KalDate;
 @protocol KalViewDelegate, KalDataSourceCallbacks;
@@ -42,7 +43,11 @@
   UILabel *headerTitleLabel;
   KalGridView *gridView;
   UITableView *tableView;
+	MADayView * dayView;
   UIImageView *shadowView;
+	
+	UIView * contentView;
+	UIView * headerView;
   id<KalViewDelegate> delegate;
   KalLogic *logic;
 }
@@ -50,12 +55,16 @@
 @property (nonatomic, assign) id<KalViewDelegate> delegate;
 @property (nonatomic, readonly) UITableView *tableView;
 @property (nonatomic, readonly) KalDate *selectedDate;
+@property (nonatomic, readonly) MADayView* dayView;
 
 - (id)initWithFrame:(CGRect)frame delegate:(id<KalViewDelegate>)delegate logic:(KalLogic *)logic;
 - (BOOL)isSliding;
 - (void)selectDate:(KalDate *)date;
 - (void)markTilesForDates:(NSArray *)dates;
 - (void)redrawEntireMonth;
+
+-(void) layoutForWideWidth;
+-(void) layoutForNarrowWidth;
 
 // These 3 methods are exposed for the delegate. They should be called 
 // *after* the KalLogic has moved to the month specified by the user.

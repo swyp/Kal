@@ -55,4 +55,8 @@
   // do nothing
 }
 
+-(NSArray*)	eventsFrom:(NSDate *)fromDate to:(NSDate *)toDate{
+	return [NSArray array];
+}
+
 @end
