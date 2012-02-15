@@ -17,9 +17,9 @@
 #define SLIDE_UP 1
 #define SLIDE_DOWN 2
 
-const CGSize kTileSize = { 46.f, 44.f };
 
 static NSString *kSlideAnimationId = @"KalSwitchMonths";
+static CGSize kTileSize;
 
 @interface KalGridView ()
 @property (nonatomic, retain) KalTileView *selectedTile;
@@ -29,10 +29,12 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
 
 @implementation KalGridView
 
-@synthesize selectedTile, highlightedTile, transitioning;
+@synthesize selectedTile, highlightedTile, transitioning, tileSize = _tileSize;
 
 - (id)initWithFrame:(CGRect)frame logic:(KalLogic *)theLogic delegate:(id<KalViewDelegate>)theDelegate
 {
+	CGSize newTileSize	=	CGSizeMake( 46.f, 41.f );
+	
   // MobileCal uses 46px wide tiles, with a 2px inner stroke 
   // along the top and right edges. Since there are 7 columns,
   // the width needs to be 46*7 (322px). But the iPhone's screen
@@ -41,9 +43,24 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
   // to accomodate all 7 columns. The 7th day's 2px inner stroke
   // will be clipped off the screen, but that's fine because
   // MobileCal does the same thing.
-  frame.size.width = 7 * kTileSize.width;
+	CGSize frameSize	=	frame.size;
+
+	frameSize.width = 7 * newTileSize.width;
+	frameSize.height = 5 * newTileSize.height;
+
+	if (frameSize.width * 1.75 < frame.size.width && frameSize.height * 1.75 < frame.size.height){
+		//thus we can upscale the entire size
+		newTileSize.width	= round(newTileSize.width * 1.75);
+		newTileSize.height	= round(newTileSize.height * 1.75); 
+		frameSize.width = 7 * newTileSize.width;
+		frameSize.height = 5 * newTileSize.height;
+	}
+	
+	frame.size	=	frameSize;
   
   if (self = [super initWithFrame:frame]) {
+	  self.tileSize	=	newTileSize;
+	  
     self.clipsToBounds = YES;
     logic = [theLogic retain];
     delegate = theDelegate;
@@ -160,12 +177,12 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
   // set initial positions before the slide
   if (direction == SLIDE_UP) {
     backMonthView.top = keepOneRow
-      ? frontMonthView.bottom - kTileSize.height
+      ? frontMonthView.bottom -self.tileSize.height
       : frontMonthView.bottom;
   } else if (direction == SLIDE_DOWN) {
     NSUInteger numWeeksToKeep = keepOneRow ? 1 : 0;
     NSInteger numWeeksToSlide = [backMonthView numWeeks] - numWeeksToKeep;
-    backMonthView.top = -numWeeksToSlide * kTileSize.height;
+    backMonthView.top = -numWeeksToSlide *self.tileSize.height;
   } else {
     backMonthView.top = 0.f;
   }
@@ -221,6 +238,15 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
 }
 
 #pragma mark -
+-(void) setTileSize:(CGSize)size{
+	kTileSize	=	size;
+	_tileSize	=	size;
+	
+}
+
++(CGSize) tileSize{
+	return kTileSize;
+}
 
 - (void)selectDate:(KalDate *)date
 {

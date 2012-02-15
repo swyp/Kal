@@ -7,6 +7,7 @@
 #import "KalGridView.h"
 #import "KalLogic.h"
 #import "KalPrivate.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface KalView ()
 - (void)addSubviewsToHeaderView:(UIView *)headerView;
@@ -28,18 +29,21 @@ static const CGFloat kMonthLabelHeight = 17.f;
     logic = [theLogic retain];
     [logic addObserver:self forKeyPath:@"selectedMonthNameAndYear" options:NSKeyValueObservingOptionNew context:NULL];
     self.autoresizesSubviews = YES;
-    self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
+	  
+	contentView = [[UIView alloc] initWithFrame:CGRectMake(0.f, kHeaderHeight, frame.size.width, frame.size.height - kHeaderHeight)] ;
+
+	contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	[self addSubviewsToContentView:contentView];
+
     headerView = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, frame.size.width, kHeaderHeight)] ;
     headerView.backgroundColor = [UIColor grayColor];
 	  [headerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [self addSubviewsToHeaderView:headerView];
     [self addSubview:headerView];
     
-    contentView = [[UIView alloc] initWithFrame:CGRectMake(0.f, kHeaderHeight, frame.size.width, frame.size.height - kHeaderHeight)] ;
-    contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-    [self addSubviewsToContentView:contentView];
-    [self addSubview:contentView];
+    [self insertSubview:contentView belowSubview:headerView];
   }
   
   return self;
@@ -135,8 +139,8 @@ static const CGFloat kMonthLabelHeight = 17.f;
   NSUInteger i = firstWeekday - 1;
 	NSUInteger maxDays = 7;
 	NSInteger currentDay	=	firstWeekday;
-  for (CGFloat xOffset = 0.f; xOffset < hView.width && currentDay< firstWeekday+maxDays ; xOffset += 46.f, i = (i+1)%7) {
-    CGRect weekdayFrame = CGRectMake(xOffset, 30.f, 46.f, kHeaderHeight - 29.f);
+  for (CGFloat xOffset = 0.f; xOffset < hView.width && currentDay< firstWeekday+maxDays ; xOffset += [KalGridView tileSize].width, i = (i+1)%7) {
+    CGRect weekdayFrame = CGRectMake(xOffset, 30.f, [KalGridView tileSize].width, kHeaderHeight - 29.f);
     UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:weekdayFrame];
     weekdayLabel.backgroundColor = [UIColor clearColor];
     weekdayLabel.font = [UIFont boldSystemFontOfSize:10.f];
@@ -160,7 +164,7 @@ static const CGFloat kMonthLabelHeight = 17.f;
   CGRect fullWidthAutomaticLayoutFrame = CGRectMake(0.f, 0.f, self.width, 0.f);
 
   // The tile grid (the calendar body)
-  gridView = [[KalGridView alloc] initWithFrame:fullWidthAutomaticLayoutFrame logic:logic delegate:delegate];
+  gridView = [[KalGridView alloc] initWithFrame:self.frame logic:logic delegate:delegate];
   [gridView addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:NULL];
 	[gridView setAutoresizingMask:UIViewAutoresizingNone];
   [cView addSubview:gridView];
@@ -174,6 +178,8 @@ static const CGFloat kMonthLabelHeight = 17.f;
 	CGRect	dayViewFrame	=	CGRectMake(0,gridView.frame.size.height + kHeaderHeight, cView.width, cView.height - (gridView.frame.size.height + kHeaderHeight));
 	dayView	=	[[MADayView alloc] init];
 	dayView.autoScrollToFirstEvent	= YES;
+	dayView.layer.borderWidth		= 2;
+	dayView.layer.borderColor		= [[UIColor lightGrayColor] CGColor];
 	dayView.autoresizingMask		= UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	[dayView setFrame:dayViewFrame];
 	[cView addSubview:dayView];
@@ -192,13 +198,26 @@ static const CGFloat kMonthLabelHeight = 17.f;
 
 -(void) layoutForWideWidth{
 	CGRect	dayViewFrame	=	CGRectMake(gridView.frame.size.width,0, contentView.width - gridView.frame.size.width, gridView.frame.size.height);
-	[dayView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin];
-	[dayView setFrame:dayViewFrame];
+	if (CGRectEqualToRect(dayViewFrame , dayView.frame) == NO){
+		[dayView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin];
+		[dayView setAlpha:0];
+		[dayView setFrame:dayViewFrame];
+		[UIView animateWithDuration:.3 animations:^{
+			[dayView setAlpha:1];
+		}];
+	}
+
 }
 -(void) layoutForNarrowWidth{
-	CGRect	dayViewFrame	=	CGRectMake(0,gridView.frame.size.height + kHeaderHeight, contentView.width, contentView.height - (gridView.frame.size.height + kHeaderHeight));
-	[dayView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin];
-	[dayView setFrame:dayViewFrame];
+	CGRect	dayViewFrame	=	CGRectMake(0,gridView.frame.size.height, contentView.width, contentView.height - (gridView.frame.size.height + kHeaderHeight));
+	if (CGRectEqualToRect(dayViewFrame , dayView.frame) == NO){
+		[dayView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin];
+		[dayView setAlpha:0];
+		[dayView setFrame:dayViewFrame];
+		[UIView animateWithDuration:.3 animations:^{
+			[dayView setAlpha:1];
+		}];
+	}
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -216,10 +235,10 @@ static const CGFloat kMonthLabelHeight = 17.f;
      * [UIView beginAnimations:context:].
      */
     CGFloat gridBottom = gridView.top + gridView.height;
-    CGRect frame = tableView.frame;
+    CGRect frame = dayView.frame;
     frame.origin.y = gridBottom;
-    frame.size.height = tableView.superview.height - gridBottom;
-    tableView.frame = frame;
+    frame.size.height = contentView.height - gridBottom;
+//    dayView.frame = frame;
     shadowView.top = gridBottom;
     
   } else if ([keyPath isEqualToString:@"selectedMonthNameAndYear"]) {

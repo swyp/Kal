@@ -11,6 +11,9 @@
 
 #import "MAEvent.h"
 
+#define windowFrameForOrientation() (UIDeviceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])? [[UIApplication sharedApplication] keyWindow].frame:CGRectMake(0, 0,[[UIApplication sharedApplication] keyWindow].frame.size.height, [[UIApplication sharedApplication] keyWindow].frame.size.width))
+
+
 #define PROFILER 0
 #if PROFILER
 #include <mach/mach_time.h>
@@ -70,11 +73,10 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
   }
 }
 
-- (void)setDelegate:(id<UITableViewDelegate>)aDelegate
+- (void)setDelegate:(id<KalViewControllerDelegate>)aDelegate
 {
   if (delegate != aDelegate) {
     delegate = aDelegate;
-    tableView.delegate = delegate;
   }
 }
 
@@ -189,11 +191,11 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 {
 	if (!self.title)
 	self.title = @"Calendar";
-	kalView = [[KalView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] delegate:self logic:logic] ;
+	
+	kalView = [[KalView alloc] initWithFrame:windowFrameForOrientation() delegate:self logic:logic] ;
 	self.view = kalView;
 	tableView = kalView.tableView;
 	tableView.dataSource = dataSource;
-	tableView.delegate = delegate;
 	[tableView retain];
 	
 	dayView	=	[kalView.dayView retain];
@@ -236,6 +238,7 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 	if (UIDeviceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) || ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)){
 		[kalView layoutForWideWidth];
 	}else{
