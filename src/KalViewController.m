@@ -195,7 +195,6 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 	kalView = [[KalView alloc] initWithFrame:windowFrameForOrientation() delegate:self logic:logic] ;
 	self.view = kalView;
 	tableView = kalView.tableView;
-	tableView.dataSource = dataSource;
 	[tableView retain];
 	
 	dayView	=	[kalView.dayView retain];
