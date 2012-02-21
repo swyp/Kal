@@ -84,4 +84,6 @@
 - (void)showFollowingMonth;
 - (void)didSelectDate:(KalDate *)date;
 
+-(void) didTapPreviouslySelectedDate:(KalDate*)date withTile:(UIView*)tileView;
+
 @end

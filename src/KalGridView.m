@@ -64,7 +64,11 @@ static CGSize kTileSize;
     self.clipsToBounds = YES;
     logic = [theLogic retain];
     delegate = theDelegate;
-    
+	  
+	  UITapGestureRecognizer * singleTapRecognizer	=	[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didRecognizeTileTap:)];
+	  [singleTapRecognizer setDelaysTouchesBegan:FALSE];
+	  [self addGestureRecognizer:singleTapRecognizer];
+	  
     CGRect monthRect = CGRectMake(0.f, 0.f, frame.size.width, frame.size.height);
     frontMonthView = [[KalMonthView alloc] initWithFrame:monthRect];
     backMonthView = [[KalMonthView alloc] initWithFrame:monthRect];
@@ -94,6 +98,19 @@ static CGSize kTileSize;
 
 #pragma mark -
 #pragma mark Touches
+-(void)didRecognizeTileTap:(UITapGestureRecognizer*)sender{
+	if ([sender state] == UIGestureRecognizerStateRecognized){
+		UIView *hitView = [self hitTest:[sender locationInView:self] withEvent:nil];
+		if ([hitView isKindOfClass:[KalTileView class]]) {
+//			KalTileView *tile = (KalTileView*)hitView;
+//			if (selectedTile == tile) {
+//				[delegate didTapPreviouslySelectedDate:tile.date withTile:tile];
+//			}else{
+//				[self setSelectedTile:tile];
+//			}
+		}
+	}
+}
 
 - (void)setHighlightedTile:(KalTileView *)tile
 {
@@ -137,6 +154,16 @@ static CGSize kTileSize;
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	UITouch *touch = [touches anyObject];
+	CGPoint location = [touch locationInView:self];
+	UIView *hitView = [self hitTest:location withEvent:event];
+	if ([hitView isKindOfClass:[KalTileView class]]) {
+		KalTileView *tile = (KalTileView*)hitView;
+		if (self.selectedTile == tile){
+			[delegate didTapPreviouslySelectedDate:tile.date withTile:tile];
+		}
+	}
+	
   [self receivedTouches:touches withEvent:event];
 }
 

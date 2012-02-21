@@ -100,6 +100,10 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 // -----------------------------------------
 #pragma mark KalViewDelegate protocol
 
+-(void) didTapPreviouslySelectedDate:(KalDate *)date withTile:(UIView*)tileView{
+	[delegate rePressedOnDay:date.NSDate withView:tileView withController:self];
+}
+
 - (void)didSelectDate:(KalDate *)date
 {
 	self.selectedDate = [date NSDate];
@@ -272,7 +276,7 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 		MAEvent *nextMAEvent = [[MAEvent alloc] init];
 		nextMAEvent.backgroundColor = [UIColor colorWithCGColor:[[event calendar] CGColor]];
 		nextMAEvent.textColor = [UIColor whiteColor];
-		nextMAEvent.allDay	= NO;
+		nextMAEvent.allDay	=	event.isAllDay;
 		nextMAEvent.start	=	event.startDate;
 		nextMAEvent.end		=	event.endDate;
 		nextMAEvent.title	=	event.title;

@@ -13,9 +13,8 @@
 
 @protocol KalViewControllerDelegate <NSObject>
 @optional
--(void) longPressedOnEvent:(EKEvent*)event withController:(KalViewController*)controller;
 -(void) tappedOnEvent:(EKEvent*)event withController:(KalViewController*)controller;
--(void) longPressedOnDay:(NSDate*)date withController:(KalViewController*)controller;
+-(void) rePressedOnDay:(NSDate*)date withView:(UIView*)dayTile withController:(KalViewController*)controller;
 @end
 
 /*
