@@ -65,9 +65,9 @@ static CGSize kTileSize;
     logic = [theLogic retain];
     delegate = theDelegate;
 	  
-	  UITapGestureRecognizer * singleTapRecognizer	=	[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didRecognizeTileTap:)];
-	  [singleTapRecognizer setDelaysTouchesBegan:FALSE];
-	  [self addGestureRecognizer:singleTapRecognizer];
+//	  UITapGestureRecognizer * singleTapRecognizer	=	[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didRecognizeTileTap:)];
+//	  [singleTapRecognizer setDelaysTouchesBegan:FALSE];
+//	  [self addGestureRecognizer:singleTapRecognizer];
 	  
     CGRect monthRect = CGRectMake(0.f, 0.f, frame.size.width, frame.size.height);
     frontMonthView = [[KalMonthView alloc] initWithFrame:monthRect];
@@ -154,6 +154,8 @@ static CGSize kTileSize;
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	[super touchesBegan:touches withEvent:event];
+
 	UITouch *touch = [touches anyObject];
 	CGPoint location = [touch locationInView:self];
 	UIView *hitView = [self hitTest:location withEvent:event];
@@ -169,11 +171,15 @@ static CGSize kTileSize;
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	[super touchesMoved:touches withEvent:event];
+	
   [self receivedTouches:touches withEvent:event];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	[super touchesEnded:touches withEvent:event];
+	
   UITouch *touch = [touches anyObject];
   CGPoint location = [touch locationInView:self];
   UIView *hitView = [self hitTest:location withEvent:event];
