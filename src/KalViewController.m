@@ -145,7 +145,17 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
     [dates replaceObjectAtIndex:i withObject:[KalDate dateFromNSDate:[dates objectAtIndex:i]]];
   
   [[self calendarView] markTilesForDates:dates];
-  [self didSelectDate:self.calendarView.selectedDate];
+	KalDate * dateToShow	=	self.calendarView.selectedDate;
+	if ([theDataSource respondsToSelector:@selector(dateOfLastModifiedEvent)] && [theDataSource didAutodisplayLastModifiedAlready] == FALSE){
+
+		NSDate * recentDate	=	 [theDataSource dateOfLastModifiedEvent];
+		if (recentDate != nil){
+			dateToShow	=	[KalDate dateFromNSDate:recentDate];
+			[self.calendarView selectDate:dateToShow];
+			[theDataSource setDidAutodisplayLastModifiedAlready:TRUE];
+		}
+	}
+  [self didSelectDate:dateToShow];
 }
 
 // ---------------------------------------

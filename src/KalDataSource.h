@@ -80,6 +80,10 @@
 ///Returns a list of EKEvents
 -(NSArray*)	eventsFrom:(NSDate *)fromDate to:(NSDate *)toDate;
 
+@optional 
+-(NSDate*) dateOfLastModifiedEvent;
+@property (nonatomic, assign) BOOL didAutodisplayLastModifiedAlready;
+
 @end
 
 @protocol KalDataSourceCallbacks <NSObject>
